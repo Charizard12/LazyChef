@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -20,9 +21,9 @@ import java.util.List;
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private Context context;
     private List<String> listDataHeader;
-    private HashMap<String, List<String>> listHashMap;
+    private HashMap<String, List<Ingredient>> listHashMap;
 
-    public ExpandableListAdapter (Context context, List<String> listDataHeader, HashMap<String, List<String>> listHashMap){
+    public ExpandableListAdapter (Context context, List<String> listDataHeader, HashMap<String, List<Ingredient>> listHashMap){
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listHashMap = listHashMap;
@@ -77,16 +78,37 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         return view;
     }
 
-    @Override
+    @Override //se agregan los ingredientes
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        final String childText =(String) getChild(groupPosition, childPosition);
+
         View view = convertView;
+        IngredientHolder holder = null;
+
         if(view == null){
             LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.list_item,null);
+            view = inflater.inflate(R.layout.ingredient_item,null);
+            holder = new IngredientHolder();
+            holder.ingredientName = (TextView) view.findViewById(R.id.ingredientItemTv);
+            holder.ingredientCheckBox = (CheckBox) view.findViewById(R.id.ingredientCB);
+            holder.ingredientCheckBox.setOnCheckedChangeListener((MainActivity) context);
+            view.setTag(holder);
         }
-        TextView listChildTv = (TextView)view.findViewById(R.id.listItemTv);
-        listChildTv.setText(childText);
+        else{
+            holder = (IngredientHolder) view.getTag();
+
+        }
+        Ingredient currentIngredient = (Ingredient) getChild(groupPosition, childPosition);
+        holder.ingredientName.setText(currentIngredient.getIngredientName());
+        holder.ingredientCheckBox.setChecked(currentIngredient.isChecked());
+        holder.ingredientCheckBox.setTag(currentIngredient);
+
+        /*TextView ingtv = (TextView)view.findViewById(R.id.ingredientItemTv);
+        ingtv.setText(currentIngredient.getIngredientName());
+        CheckBox ingcb = (CheckBox)view.findViewById(R.id.ingredientCB);
+        ingcb.setChecked(currentIngredient.isChecked());*/
+
+        /*TextView listChildTv = (TextView)view.findViewById(R.id.listItemTv);
+        listChildTv.setText(childText);*/
         return view;
     }
 
@@ -94,4 +116,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
+
+    private static class IngredientHolder{
+        public TextView ingredientName;
+        public CheckBox ingredientCheckBox;
+    }
+
 }
