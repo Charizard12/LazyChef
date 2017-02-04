@@ -6,13 +6,15 @@ package project.lazychef.alicm.lazychef;
 
 public class Ingredient {
 
+    int id;
     int imageResource;
     String ingredientName;
     boolean checked = false;
 
-    public Ingredient(int imageResource, String ingredientName) {
+    public Ingredient(int imageResource, String ingredientName, int id) {
         this.imageResource = imageResource;
         this.ingredientName = ingredientName;
+        this.id = id;
     }
 
     public int getImageResource() {
@@ -37,5 +39,13 @@ public class Ingredient {
 
     public void setChecked(boolean checked) {
         this.checked = checked;
+    }
+
+    public void setId(int id){
+        this.id = id;
+    }
+
+    public int getId(){
+        return id;
     }
 }

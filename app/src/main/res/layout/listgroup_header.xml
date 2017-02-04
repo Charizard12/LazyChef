@@ -4,15 +4,15 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimary"
+    android:background="@android:color/holo_blue_light"
     >
 
     <TextView
         android:id="@+id/listgroupHeaderTv"
-        android:textSize="16sp"
+        android:textSize="24sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="16dp"
+        android:paddingLeft="8dp"
         tools:text="Group Header"
 
         android:textColor="@android:color/white" />

@@ -8,9 +8,10 @@
     >
 
     <ImageView
+        android:id="@+id/ingredientImg"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:src="@mipmap/ic_launcher"
+        android:src="@drawable/banana"
         android:layout_gravity="center_vertical"
         />
 

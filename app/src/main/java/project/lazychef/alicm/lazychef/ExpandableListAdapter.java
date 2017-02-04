@@ -7,10 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -22,11 +26,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private Context context;
     private List<String> listDataHeader;
     private HashMap<String, List<Ingredient>> listHashMap;
+    private boolean[][] booleans;
 
     public ExpandableListAdapter (Context context, List<String> listDataHeader, HashMap<String, List<Ingredient>> listHashMap){
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listHashMap = listHashMap;
+        booleans = new boolean[listDataHeader.size()][1000];
     }
 
     @Override
@@ -79,36 +85,64 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override //se agregan los ingredientes
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
         View view = convertView;
         IngredientHolder holder = null;
-
         if(view == null){
             LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.ingredient_item,null);
-            holder = new IngredientHolder();
+            /*holder = new IngredientHolder();
             holder.ingredientName = (TextView) view.findViewById(R.id.ingredientItemTv);
             holder.ingredientCheckBox = (CheckBox) view.findViewById(R.id.ingredientCB);
             holder.ingredientCheckBox.setOnCheckedChangeListener((MainActivity) context);
-            view.setTag(holder);
+            view.setTag(holder);*/
         }
         else{
-            holder = (IngredientHolder) view.getTag();
-
+            //holder = (IngredientHolder) view.getTag();
         }
-        Ingredient currentIngredient = (Ingredient) getChild(groupPosition, childPosition);
-        holder.ingredientName.setText(currentIngredient.getIngredientName());
+        final Ingredient currentIngredient = (Ingredient) getChild(groupPosition, childPosition);
+        /*holder.ingredientName.setText(currentIngredient.getIngredientName());
         holder.ingredientCheckBox.setChecked(currentIngredient.isChecked());
         holder.ingredientCheckBox.setTag(currentIngredient);
+        view.setTag(holder);*/
 
-        /*TextView ingtv = (TextView)view.findViewById(R.id.ingredientItemTv);
+        TextView ingtv = (TextView)view.findViewById(R.id.ingredientItemTv);
         ingtv.setText(currentIngredient.getIngredientName());
-        CheckBox ingcb = (CheckBox)view.findViewById(R.id.ingredientCB);
-        ingcb.setChecked(currentIngredient.isChecked());*/
 
-        /*TextView listChildTv = (TextView)view.findViewById(R.id.listItemTv);
-        listChildTv.setText(childText);*/
+        ImageView imgvw = (ImageView)view.findViewById(R.id.ingredientImg);
+        imgvw.setImageResource(currentIngredient.getImageResource());
+
+        final CheckBox ingcb = (CheckBox)view.findViewById(R.id.ingredientCB);
+        ingcb.setChecked(booleans[groupPosition][childPosition]);
+        //ingcb.setChecked(currentIngredient.isChecked());
+        ingcb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                /*Toast.makeText(context, currentIngredient.getIngredientName()
+                        + " child ID: " + getChildId(groupPosition,childPosition)
+                        + " parent ID: " + getGroupId(groupPosition), Toast.LENGTH_SHORT).show();*/
+
+            }
+        });
+        ingcb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(currentIngredient.isChecked()){
+                    //Toast.makeText(context, "was checked", Toast.LENGTH_SHORT).show();
+                    currentIngredient.setChecked(false);
+                    booleans[groupPosition][childPosition] = false;
+                    ingcb.setChecked(false);
+                }
+                else {
+                    //Toast.makeText(context, "wasn't checked", Toast.LENGTH_SHORT).show();
+                    currentIngredient.setChecked(true);
+                    booleans[groupPosition][childPosition] = true;
+                    ingcb.setChecked(true);
+                }
+                //currentIngredient.setChecked(currentIngredient.isChecked());
+            }
+        });
         return view;
     }
 
