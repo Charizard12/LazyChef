@@ -27,6 +27,7 @@
         android:layout_height="wrap_content"
         android:text="Continuar"
         android:onClick="continuar"
+        android:backgroundTint="#f9af03"
         />
 
 

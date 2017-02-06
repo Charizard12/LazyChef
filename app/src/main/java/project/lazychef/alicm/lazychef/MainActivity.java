@@ -1,10 +1,15 @@
 package project.lazychef.alicm.lazychef;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
+import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -13,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements android.widget.CompoundButton.OnCheckedChangeListener {
+public class MainActivity extends AppCompatActivity {
 
     private ExpandableListView expandableListView;
     private ExpandableListAdapter expandableListAdapter;
@@ -86,9 +91,34 @@ public class MainActivity extends AppCompatActivity implements android.widget.Co
             if(selectedIngredients.isEmpty()){
                 System.out.println("no has seleccionado ingredientes");
                 Toast.makeText(MainActivity.this, "No has seleccionado ingredientes", Toast.LENGTH_SHORT).show();
-            }else
+            }else {
                 Toast.makeText(MainActivity.this, Arrays.toString(selectedIngredients.toArray()) + "Seleccionados", Toast.LENGTH_SHORT).show();
+
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
+                View mView = getLayoutInflater().inflate(R.layout.options_dialog, null);
+
+                final Spinner difficultSpinner = (Spinner) mView.findViewById(R.id.difficultSpinner);
+                final Spinner timeSpinner = (Spinner) mView.findViewById(R.id.timeSpinner);
+                final Switch hornazo = (Switch)mView.findViewById(R.id.hornazo);
+
+                mBuilder.setView(mView);
+                mBuilder.setPositiveButton("Continuar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(MainActivity.this,
+                                " Dificultad: " + String.valueOf(difficultSpinner.getSelectedItemId())
+                                        + " Tiempo: " + String.valueOf(timeSpinner.getSelectedItem())
+                                        + " Horno: " + String.valueOf(hornazo.isChecked())
+                                , Toast.LENGTH_SHORT).show();
+                    }
+                });
+                AlertDialog dialog = mBuilder.create();
+                dialog.show();
+            }
             System.out.println(Arrays.toString(selectedIngredients.toArray()));
+
+
+
         }
     }
 
@@ -97,14 +127,9 @@ public class MainActivity extends AppCompatActivity implements android.widget.Co
             if(ingredientes.isChecked()){
                 String ingredientName = ingredientes.getIngredientName();
                 selectedIngredients.add(ingredientName);
+                //int ingredientId = ingredientes.getId();
             }
         }
     }
 
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-       /* int pos = (int) expandableListView.getSelectedPosition();*/
-
-    }
 }
