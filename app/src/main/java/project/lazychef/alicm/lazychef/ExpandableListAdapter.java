@@ -27,7 +27,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private List<ListGrpHeader> listGrpHeaders;
     private HashMap<String, List<Ingredient>> listHashMap;
     private boolean[][] booleans;
-
+    //adaptador
     public ExpandableListAdapter (Context context, HashMap<String, List<Ingredient>> listHashMap, List<ListGrpHeader> listGrpHeaders){
         this.context = context;
         this.listHashMap = listHashMap;
