@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/backGround"
     tools:context="project.lazychef.alicm.lazychef.MainActivity">
 
     <TextView
@@ -18,7 +19,7 @@
         android:id="@+id/expandableLv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:childDivider="#ffffff"
+        android:childDivider="@color/white"
         android:layout_weight="1"
         ></ExpandableListView>
 
@@ -27,7 +28,8 @@
         android:layout_height="wrap_content"
         android:text="Continuar"
         android:onClick="continuar"
-        android:backgroundTint="#f9af03"
+        android:backgroundTint="@color/colorPrimary"
+        android:textColor="@color/white"
         />
 
 

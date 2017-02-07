@@ -22,9 +22,10 @@ public class MainActivity extends AppCompatActivity {
 
     private ExpandableListView expandableListView;
     private ExpandableListAdapter expandableListAdapter;
-    private List<String> listHeaders;
     private HashMap<String, List<Ingredient>> ingredientMap = null;
-    private List<String> selectedIngredients;
+    private List<Integer> selectedIngredients;
+    private List<ListGrpHeader> listGrpHeader;
+    private RecipeParameters recipeParameters;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,20 +33,22 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         expandableListView = (ExpandableListView) findViewById(R.id.expandableLv);
-        initData();
-        expandableListAdapter = new ExpandableListAdapter(this, listHeaders, ingredientMap);
+        initData(); //iniciar datos
+        //se envia al adaptador el mapa de los ingredientes y la lista de Headers
+        expandableListAdapter = new ExpandableListAdapter(this, ingredientMap, listGrpHeader);
         expandableListView.setAdapter(expandableListAdapter);
     }
 
     private void initData(){
-        listHeaders = new ArrayList<>();
-        ingredientMap = new HashMap<>();
+        ingredientMap = new HashMap<>();    //Mapa: <Nombre del grupo, lista de objetos
+        listGrpHeader = new ArrayList<>();  //lista de los Headers
+                                            //Header:: nombre e icono
+        listGrpHeader.add(new ListGrpHeader("Carnes", R.drawable.meat_icon));
+        listGrpHeader.add(new ListGrpHeader("Frutas", R.drawable.fruit_icon));
+        listGrpHeader.add(new ListGrpHeader("Verduras", R.drawable.vegetables_icon));
+        listGrpHeader.add(new ListGrpHeader("Quesos", R.drawable.cheese_icon));
 
-        listHeaders.add("Carnes");
-        listHeaders.add("Frutas");
-        listHeaders.add("Verduras");
-        listHeaders.add("Quesos");
-
+        //---------Ingrediente:: icono, nombre y Id-------------------------
         List<Ingredient> carnes = new ArrayList<>();
         carnes.add(new Ingredient(R.mipmap.ic_launcher, "bistek", 0));
         carnes.add(new Ingredient(R.mipmap.ic_launcher, "cecina", 1));
@@ -69,65 +72,70 @@ public class MainActivity extends AppCompatActivity {
         quesos.add(new Ingredient(R.mipmap.ic_launcher, "panela", 13));
         quesos.add(new Ingredient(R.mipmap.ic_launcher, "manchego", 14));
         quesos.add(new Ingredient(R.mipmap.ic_launcher, "amarillo", 15));
+        //---------------Listas de ingredientes----------------------------
 
-        ingredientMap.put(listHeaders.get(0), carnes);
-        ingredientMap.put(listHeaders.get(1), frutas);
-        ingredientMap.put(listHeaders.get(2), verduras);
-        ingredientMap.put(listHeaders.get(3), quesos);
-
-
-
+        //------------------titulo del header, lista de ingredientes-------
+        ingredientMap.put(listGrpHeader.get(0).getTitle(), carnes);
+        ingredientMap.put(listGrpHeader.get(1).getTitle(), frutas);
+        ingredientMap.put(listGrpHeader.get(2).getTitle(), verduras);
+        ingredientMap.put(listGrpHeader.get(3).getTitle(), quesos);
+        //------------datos cargados---------------------------------------
     }
 
     public void continuar(View v){
-        if(ingredientMap != null){
-            selectedIngredients = new ArrayList<>();
+        if(ingredientMap != null){  //--checamos que el mapa este lleno
+            selectedIngredients = new ArrayList<>();  //---------lista de ingredientes seleccionados
+            //cada que se pulsa el boton se crea una nueva lista
+            //recorremos el mapa
             for(Map.Entry<String, List<Ingredient>> entry : ingredientMap.entrySet()){
-                String key =  entry.getKey();
-                List<Ingredient> ing = entry.getValue();
-                getSelectedIngredients(ing);
-                System.out.println(key);
+                String key =  entry.getKey(); //se obtiene el valor de la llave, el nombre del grupo
+                List<Ingredient> ingredientGroup = entry.getValue(); //se obtiene la lista de ingredientes
+                getSelectedIngredients(ingredientGroup);    //obtenemos los ingredientes seleccionados.
             }
-            if(selectedIngredients.isEmpty()){
-                System.out.println("no has seleccionado ingredientes");
-                Toast.makeText(MainActivity.this, "No has seleccionado ingredientes", Toast.LENGTH_SHORT).show();
-            }else {
-                Toast.makeText(MainActivity.this, Arrays.toString(selectedIngredients.toArray()) + "Seleccionados", Toast.LENGTH_SHORT).show();
 
+            //si la lista de ingredientes seleccionados esta vacia
+            if(selectedIngredients.isEmpty()){
+                Toast.makeText(MainActivity.this, "No has seleccionado ingredientes", Toast.LENGTH_SHORT).show();
+            }
+            //si tenemos ingredientes seleccionados
+            else {
+                //---Se creara el dialogo de opciones
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
                 View mView = getLayoutInflater().inflate(R.layout.options_dialog, null);
-
+                //Llamamos a los objetos del dialogo
                 final Spinner difficultSpinner = (Spinner) mView.findViewById(R.id.difficultSpinner);
                 final Spinner timeSpinner = (Spinner) mView.findViewById(R.id.timeSpinner);
                 final Switch hornazo = (Switch)mView.findViewById(R.id.hornazo);
-
+                //Agregamos la vista al constructor
                 mBuilder.setView(mView);
+                //funcionalidad del boton positivo
                 mBuilder.setPositiveButton("Continuar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Toast.makeText(MainActivity.this,
-                                " Dificultad: " + String.valueOf(difficultSpinner.getSelectedItemId())
-                                        + " Tiempo: " + String.valueOf(timeSpinner.getSelectedItem())
+                                " Dificultad: " + String.valueOf(difficultSpinner.getSelectedItemPosition())
+                                        + " Tiempo: " + String.valueOf(timeSpinner.getSelectedItemPosition())
                                         + " Horno: " + String.valueOf(hornazo.isChecked())
                                 , Toast.LENGTH_SHORT).show();
+                        //--guardado de parametros
+                        int dificultad = difficultSpinner.getSelectedItemPosition();
+                        int preptime = timeSpinner.getSelectedItemPosition();
+                        boolean hornear = hornazo.isChecked();
+                        recipeParameters = new RecipeParameters(selectedIngredients,dificultad,preptime,hornear);
                     }
                 });
                 AlertDialog dialog = mBuilder.create();
                 dialog.show();
             }
-            System.out.println(Arrays.toString(selectedIngredients.toArray()));
-
-
-
         }
     }
 
-    public void getSelectedIngredients(List<Ingredient> selectedOnes){
-        for(Ingredient ingredientes : selectedOnes){
-            if(ingredientes.isChecked()){
-                String ingredientName = ingredientes.getIngredientName();
-                selectedIngredients.add(ingredientName);
-                //int ingredientId = ingredientes.getId();
+    //--obtener los ingredientes seleccionados
+    public void getSelectedIngredients(List<Ingredient> ingredientGroup){
+        for(Ingredient ing : ingredientGroup){
+            if(ing.isChecked()){   //si el ingrediente esta seleccionado
+                int ingredientId = ing.getId(); //obtenemos su id
+                selectedIngredients.add(ingredientId);  //guardamos el id
             }
         }
     }
