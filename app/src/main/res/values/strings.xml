@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">LazyChef</string>
+
+    <string name="difficultSpinnerPrompt">Dificultad</string>
+    <string name="timeSpinnerPrompt">Tiempo</string>
+
+    <string-array name="difficultSpinnerContent">
+        <item>Fácil</item>
+        <item>Medio</item>
+        <item>Difícil</item>
+    </string-array>
+    <string-array name="timeSpinnerContent">
+        <item>10-30 min</item>
+        <item>30-60 min</item>
+        <item>+60 min</item>
+    </string-array>
 </resources>

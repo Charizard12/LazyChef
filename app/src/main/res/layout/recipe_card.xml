@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <ImageView
+        android:id="@+id/recipeCImage"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="4dp"
+        android:src="@drawable/bananacakes"
+        android:scaleType="centerCrop"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:paddingLeft="4dp">
+        <TextView
+            android:id="@+id/recipeCNameTv"
+            android:layout_width="match_parent"
+            android:layout_height="26dp"
+            android:textSize="22sp"
+            android:layout_marginTop="-2dp"
+            tools:text="Hot Cakes de Plátano"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:text="Necesitas:"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/necesitasTv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:scrollbars="vertical"
+            tools:text="Harina, huevo, leche"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <RatingBar
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ratingBar"
+                android:numStars="5"
+
+                style="?android:attr/ratingBarStyleSmall"
+                android:rating="4.5"
+                android:layout_marginRight="60dp"/>
+
+            <ImageView
+                android:id="@+id/bakeIcon"
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_weight="1"
+                android:layout_marginBottom="4dp"/>
+            <ImageView
+                android:id="@+id/difficultIcon"
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:src="@drawable/difficult_icon_0"
+                android:layout_weight="1"
+                android:layout_marginBottom="4dp"/>
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="30dp"
+        android:layout_height="match_parent"
+        android:text=">"
+        android:backgroundTint="@color/colorPrimary"
+        android:alpha=".5"/>
+
+
+
+</LinearLayout>
