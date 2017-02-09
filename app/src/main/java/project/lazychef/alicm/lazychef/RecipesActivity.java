@@ -39,7 +39,7 @@ public class RecipesActivity extends AppCompatActivity {
         imageResource = R.drawable.bananacakes;
         //de momento le paso los parametros de busqueda, la idea es que se saquen los datos de la BD
         Recipe bestRecipe = new Recipe("Hot Cakes", faltantes, recipeParameters.difficult,
-                recipeParameters.cookingTime, recipeParameters.bake, imageResource);
+                25, recipeParameters.bake, imageResource);
         bestResult(bestRecipe);
 
         recipeListView = (ListView) findViewById(R.id.recipeListView);
@@ -67,6 +67,9 @@ public class RecipesActivity extends AppCompatActivity {
         TextView scrollabletv = (TextView)cardview.findViewById(R.id.necesitasTv);
         scrollabletv.setMovementMethod(new ScrollingMovementMethod());
         scrollabletv.setText(Arrays.toString(bestRecipe.getFaltantes().toArray()));
+
+        TextView timetv = (TextView) cardview.findViewById(R.id.timeTextView);
+        timetv.setText(bestRecipe.getCookTime() + " min");
         //icono de dificultad
         ImageView difficultIcon = (ImageView)cardview.findViewById(R.id.difficultIcon);
         switch (bestRecipe.getDifficult()){
@@ -99,35 +102,46 @@ public class RecipesActivity extends AppCompatActivity {
         faltantes.add("Pan");
         faltantes.add("Lechuga");
                         //--Receta: nombre, lista de faltantes, dificultad, tiempo, horno, imagen
-        recipeList.add(new Recipe("Sandwich", faltantes, 0, 1, false, R.drawable.sandwich));
+        recipeList.add(new Recipe("Sandwich", faltantes, 0, 10, false, R.drawable.sandwich));
 
         List<String> faltantes2 = new ArrayList<>();
         faltantes2.add("Milanesa");
         faltantes2.add("Tortilla");
         faltantes2.add("Salsa");
-        recipeList.add(new Recipe("Burrito", faltantes2, 1, 1, false, R.drawable.burritos));
+        recipeList.add(new Recipe("Burrito", faltantes2, 1, 25, false, R.drawable.burritos));
 
         List<String> faltantes3 = new ArrayList<>();
         faltantes3.add("Huevo");
         faltantes3.add("Champiñones");
-        recipeList.add(new Recipe("Omelette", faltantes3, 2, 2, false, R.drawable.omelette));
+        recipeList.add(new Recipe("Omelette", faltantes3, 2, 30, false, R.drawable.omelette));
 
         List<String> faltantes4 = new ArrayList<>();
         faltantes4.add("Papa");
         faltantes4.add("Cebolla");
         faltantes4.add("Manchego");
-        recipeList.add(new Recipe("Papa al horno", faltantes4, 2, 2, true, R.drawable.baked_potato));
+        faltantes4.add("Albahaca");
+        faltantes4.add("Perejil");
+        faltantes4.add("Jamón");
+        faltantes4.add("Pimiento");
+        faltantes4.add("Atún");
+        faltantes4.add("Pimiento");
+        faltantes4.add("Aceite de Oliva");
+        faltantes4.add("Pimienta");
+        faltantes4.add("Oregano");
+        faltantes4.add("Papel Aluminio");
+
+        recipeList.add(new Recipe("Papa al horno", faltantes4, 2, 100, true, R.drawable.baked_potato));
 
         List<String> faltantes5 = new ArrayList<>();
         faltantes5.add("Atun");
         faltantes5.add("Brocoli");
         faltantes5.add("Zanahoria");
-        recipeList.add(new Recipe("Ensalada de atún", faltantes5, 0, 1, false, R.drawable.atun));
+        recipeList.add(new Recipe("Ensalada de atún", faltantes5, 0, 15, false, R.drawable.atun));
 
         List<String> faltantes6 = new ArrayList<>();
         faltantes6.add("Ajo");
         faltantes6.add("Mozarella");
-        recipeList.add(new Recipe("Pan de ajo con queso", faltantes6, 0, 1, true, R.drawable.pan_ajo));
+        recipeList.add(new Recipe("Pan de ajo con queso", faltantes6, 0, 60, true, R.drawable.pan_ajo));
 
     }
 }

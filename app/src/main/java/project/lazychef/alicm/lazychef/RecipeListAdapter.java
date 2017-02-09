@@ -37,7 +37,6 @@ public class RecipeListAdapter extends ArrayAdapter<Recipe> {
         }
 
         Recipe currentRecipe = getItem(position);
-        Recipe first = getItem(0);
 
         ImageView recipeImage = (ImageView) view.findViewById(R.id.recipeCImage);
         recipeImage.setImageResource(currentRecipe.getImageResource());
@@ -48,6 +47,12 @@ public class RecipeListAdapter extends ArrayAdapter<Recipe> {
         TextView scrollabletv = (TextView)view.findViewById(R.id.necesitasTv);
         scrollabletv.setMovementMethod(new ScrollingMovementMethod());
         scrollabletv.setText(Arrays.toString(currentRecipe.getFaltantes().toArray()));
+
+        //tiempo
+        TextView timeText = (TextView)view.findViewById(R.id.timeTextView);
+        timeText.setText(currentRecipe.getCookTime() + " min");
+
+
         //icono de dificultad
         ImageView difficultIcon = (ImageView)view.findViewById(R.id.difficultIcon);
         switch (currentRecipe.getDifficult()){
