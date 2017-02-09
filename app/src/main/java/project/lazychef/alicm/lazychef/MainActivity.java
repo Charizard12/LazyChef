@@ -1,6 +1,7 @@
 package project.lazychef.alicm.lazychef;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -112,16 +113,21 @@ public class MainActivity extends AppCompatActivity {
                 mBuilder.setPositiveButton("Continuar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(MainActivity.this,
+                        /*Toast.makeText(MainActivity.this,
                                 " Dificultad: " + String.valueOf(difficultSpinner.getSelectedItemPosition())
                                         + " Tiempo: " + String.valueOf(timeSpinner.getSelectedItemPosition())
                                         + " Horno: " + String.valueOf(hornazo.isChecked())
-                                , Toast.LENGTH_SHORT).show();
+                                , Toast.LENGTH_SHORT).show();*/
                         //--guardado de parametros
                         int dificultad = difficultSpinner.getSelectedItemPosition();
                         int preptime = timeSpinner.getSelectedItemPosition();
                         boolean hornear = hornazo.isChecked();
                         recipeParameters = new RecipeParameters(selectedIngredients,dificultad,preptime,hornear);
+
+                        Intent intent = new Intent(MainActivity.this, RecipesActivity.class);
+                        intent.putExtra("Parametros", recipeParameters);
+                        startActivity(intent);
+
                     }
                 });
                 AlertDialog dialog = mBuilder.create();

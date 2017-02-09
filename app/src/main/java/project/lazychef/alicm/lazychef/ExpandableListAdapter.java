@@ -55,7 +55,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View view, ViewGroup parent) {
         if(view == null){
             LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.ingredient_item,null);
+            view = inflater.inflate(R.layout.ingredient_item, null);
         }
         final Ingredient currentIngredient = (Ingredient) getChild(groupPosition, childPosition);
         TextView ingtv = (TextView)view.findViewById(R.id.ingredientItemTv);
